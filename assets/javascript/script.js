@@ -17,8 +17,9 @@ $(document).ready(function(){
 		searchRadius: 100
 	}
 
+	// old public key 9fbbb4e292ade05e28d211f800
 	// here is the start of the traitify code
-	Traitify.setPublicKey("9fbbb4e292ade05e28d211f800");
+	Traitify.setPublicKey("9301abdf54b6e2506c69f00e43");
 	Traitify.setHost("https://api-sandbox.traitify.com");
 	Traitify.setVersion("v1");
 	var assessmentId = 'a34e0f60-4a12-45e5-8033-9a7380f4e589';
@@ -131,10 +132,10 @@ $(document).ready(function(){
 			$("#radius").show();
 			$(".glassdoorResults").html("Sorry, there are no " + jobBackFromClick + " jobs in your area");
 			// build a button
-			$(".entryArea").append("<button class='jobSearchButton btn'>Search Again</button>");
+			$(".newButtonArea").append("<button class='jobSearchButton btn'>Search Again</button>");
 
 			// set a listener on search again
-			$(".entryArea").on("click", "button", function(){
+			$(".newButtonArea").on("click", "button", function(){
 
 				var inputJob = $(".desired-job").val().trim();
 				var inputRadius = $(".search-radius").val().trim();
