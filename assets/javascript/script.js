@@ -1,15 +1,20 @@
 $(document).ready(function(){
 	// hide city and state unless the user clicks no
-	$("#city").hide();
-	$("#state").hide();
+	$("#localcity").hide();
+	$("#localstate").hide();
+	$("#jobs").hide();
+	$("#radius").hide();
 
+	// keep the job as entered
+	var jobBackFromClick = "";
 	// sets the user agent for the glassdoor API
 	var userAgent = navigator.userAgent;
 	// object for the job search
 	var queryObject = {
 		city: "",
 		state: "",
-		jobTitle: "programmer"
+		jobTitle: "",
+		searchRadius: 100
 	}
 
 	// here is the start of the traitify code
@@ -59,8 +64,8 @@ $(document).ready(function(){
 				function name (error) {
 					if (error.code == error.PERMISSION_DENIED)
 						console.log("you denied me");
-						$("#city").show();
-						$("#state").show();
+						$("#localcity").show();
+						$("#localstate").show();
 				};
 			});
 		// close geolocation
@@ -90,15 +95,16 @@ $(document).ready(function(){
 
 	// set a listener on a career choise click
 	$(".assessment").on("click", "button", function(){
-		queryObject.jobTitle = $(this).text();
-		queryObject.jobTitle = queryObject.jobTitle.replace(/\s+/g, '');
+		// get the job that they clicked on
+		jobBackFromClick = $(this).text();
+		queryObject.jobTitle = jobBackFromClick.replace(/\s+/g, '');
 		console.log("chosen career - " + queryObject.jobTitle)
 
 	    $('html, body').animate({
 	        scrollTop: $(".results").offset().top
 	    }, 2000);
 
-	// getJobsWithUserDetails(queryObject){
+// getJobsWithUserDetails(queryObject){
 		// get user input if chose to enter 
 		var inputCity = $(".city").val().trim();
 		var inputState = $(".state").val().trim();
@@ -119,17 +125,41 @@ $(document).ready(function(){
 
 	// This function displays the listing of job openings
 	function displayResults (input){
-		var jobListing = input.response.employers[0].name;
-		console.log("first listed employer - " + jobListing);
+		if(input.response.employers.length == 0){
+			console.log("no jobs!!")
+			$("#jobs").show();
+			$("#radius").show();
+			$(".glassdoorResults").html("Sorry, there are no " + jobBackFromClick + " jobs in your area");
+			// build a button
+			$(".entryArea").append("<button class='jobSearchButton btn'>Search Again</button>");
 
-		$(".glassdoorResults").html("<table><thead>");
-		$(".glassdoorResults").append("<tr><th class='resultsBloc'>Company</th><th class='resultsBloc'>Job Title</th><th class='resultsBloc'>Location</th></tr></thead>");
-		$(".glassdoorResults").append("<tbody>");
-		for (i=0; i < (input.response.employers.length - 1); i++){
+			// set a listener on search again
+			$(".entryArea").on("click", "button", function(){
 
-			$(".glassdoorResults").append("<tr><td class='resultsBloc'>" + input.response.employers[i].name + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.jobTitle + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.location + "</td></tr>");
-		};
-		$(".glassdoorResults").append("</tbody></table>");
+				var inputJob = $(".desired-job").val().trim();
+				var inputRadius = $(".search-radius").val().trim();
+				console.log("job and radius - " + inputJob + " - " + inputRadius);
+				// $(".entryArea").clear();
+				jobBackFromClick = inputJob;
+				queryObject.jobTitle = inputJob;
+				queryObject.searchRadius = inputRadius;
+				getJobsWithUserDetails();
+			});
+		}
+		else{
+
+			var jobListing = input.response.employers[0].name;
+			console.log("first listed employer - " + jobListing);
+
+			$(".glassdoorResults").html("<table><thead>");
+			$(".glassdoorResults").append("<tr><th class='resultsBloc'>Company</th><th class='resultsBloc'>Job Title</th><th class='resultsBloc'>Location</th></tr></thead>");
+			$(".glassdoorResults").append("<tbody>");
+			for (i=0; i < (input.response.employers.length - 1); i++){
+
+				$(".glassdoorResults").append("<tr><td class='resultsBloc'>" + input.response.employers[i].name + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.jobTitle + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.location + "</td></tr>");
+			};
+			$(".glassdoorResults").append("</tbody></table>");
+		}
 	}
 
 	// This function will query the glassdoor API
@@ -137,11 +167,6 @@ $(document).ready(function(){
 		console.log("Query Obj in getJobsWithUserDetails - ", queryObject);
 
 		var myUserAgent = encodeURIComponent(userAgent);
-		console.log("myuseragent - " + myUserAgent);
-
-		// build the query string
-		// var queryURL = "http://api.glassdoor.com/api/api.htm?v=1&format=json&t.p=150175&t.k=f4RgxsRycNk&action=employers&q=IT&userip=50.224.192.194&useragent=Mozilla%2F5.0%20(Windows%20NT%2010.0%3B%20Win64%3B%20x64)%20AppleWebKit%2F537.36%20(KHTML%2C%20like%20Gecko)%20Chrome%2F58.0.3029.110%20Safari%2F537.36&city=" + queryObj.city + "&state=" + queryObj.state + "&q=" + queryObj.jobTitle + "&radius=24&returnJobTitles";
-
 
 		// build the query string
 		var queryURL =  [
@@ -153,10 +178,10 @@ $(document).ready(function(){
 			"q=IT",
 			"userip=50.224.192.194",
 			"useragent=" + myUserAgent,
-			"city=" + queryObj.city,
-			"state=" + queryObj.state,
-			"q=" + queryObj.jobTitle,
-			"radius=100",
+			"city=" + queryObject.city,
+			"state=" + queryObject.state,
+			"q=" + queryObject.jobTitle,
+			"radius=" + queryObject.searchRadius,
 			"returnJobTitles"
 		].join("&");
 			// &returnCities&returnStates&returnJobTitles&returnEmployers&pn=1-10"

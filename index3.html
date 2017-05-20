@@ -74,9 +74,43 @@
      </form> -->
 
 <div class="results intro">
-  <a id="submit" class="continuebutton waves-effect waves-light btn-large">Jobs Open For You!</a>
-  <div class="glassdoorResults">
-  </div>
+    <a id="submit" class="continuebutton waves-effect waves-light btn-large">Jobs Open For You!</a>
+    <div class="glassdoorResults">
+    </div>
+    <div class="entryArea">
+        <!-- State and city input fields appear here if user declines geo location -->
+        <div class="row">
+          <form class="traitifyAssessment col s12">
+                <div class="row">
+                  <div class="input-field col s2" id="localcity">
+                    <input class="city" type="text" class="validate">
+                    <label for="last_name">Your City</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="input-field col s2" id="localstate">
+                    <input id="Placeholder" class="state" type="text" class="validate">
+                    <label for="first_name">Your State</label>
+                  </div>
+                </div>
+          </form>
+          <form class="whaatTheFuckBloc col s12">
+                <div class="row">
+                  <div class="input-field col s2" id="jobs">
+                    <input class="desired-job" type="text" class="validate">
+                    <label for="last_name">Desired Job</label>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="newEntryArea col s2" id="radius">
+                    <input id="Placeholder" class="search-radius" type="text" class="validate">
+                    <label for="first_name">Search Radius</label>
+                  </div>
+                </div>
+          </form>
+        </div>
+      
+    </div>
 </div>
 <a href='https://www.glassdoor.com/index.htm'>powered by <img src='https://www.glassdoor.com/static/img/api/glassdoor_logo_80.png' title='Job Search' /></a>
 

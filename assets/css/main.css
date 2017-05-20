@@ -18,26 +18,28 @@ time, mark, audio, video {
     font: inherit;
     vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure, 
 footer, header, hgroup, menu, nav, section {
     display: block;
 }
+
 body {
     line-height: 1;
     /*background-color: grey;*/
 }
 
-
-}
 blockquote, q {
     quotes: none;
 }
+
 blockquote:before, blockquote:after,
 q:before, q:after {
     content: '';
     content: none;
 }
+
 table {
     border-collapse: collapse;
     border-spacing: 0;
@@ -46,7 +48,6 @@ table {
 .logo {
     position: relative;
     bottom: 110px;  
-  
     height:70px;
     left: 45%;
     color: white;
@@ -63,18 +64,18 @@ table {
 
 
 .intro {
-  border-width: 1px;
-  border-color: black;
-  border-style: solid;
-  height: 1050px;
-  font-family: 'Abril Fatface', cursive;
-  font-family: 'Ultra', serif;
- font-size: 60px;
-  position: relative;
+    border-width: 1px;
+    border-color: black;
+    border-style: solid;
+    height: 1050px;
+    font-family: 'Abril Fatface', cursive;
+    font-family: 'Ultra', serif;
+    font-size: 60px;
+    position: relative;
 }
 
 .intro p {
-position: absolute;
+    position: absolute;
     top: 50%;
     left: 50%;
     height: 30%;
@@ -84,9 +85,8 @@ position: absolute;
 }
 
 .introbutton {
-
- position: relative;
-      top: 70%;
+    position: relative;
+    top: 70%;
     left: 50%;
     height: 30%;
     width: 50%;
@@ -94,14 +94,11 @@ position: absolute;
 }
 
 .continuebutton {
-
- position: relative;
-
-     top: 70%;
+    position: relative;
+    top: 70%;
     left: 25%;
     height: 30%;
     width: 50%;
-
     font-family: 'Abril Fatface', cursive;
 }
 
@@ -110,13 +107,10 @@ position: absolute;
   top: -20px;
 }
 
-
-
-
-
 .grid {
   height: 0px;
 }
+
 .page-footer {
     height: 100%;
 }
@@ -129,20 +123,19 @@ position: absolute;
 }
 
 .top-nav {
-  height: 150px;
+    height: 150px;
 }
 
 .nav-wrapper {
     font-size: 50px;
     margin: 0px;
     height: 100px;
-     font-family: "Times New Roman", Times, serif;
-     position: relative;
-  /*  left: 100%;*/
-  bottom: 0px;
-  right: 0px;
-display: inline-block;
-position: fixed;
+    font-family: "Times New Roman", Times, serif;
+    position: relative;
+    bottom: 0px;
+    right: 0px;
+    display: inline-block;
+    position: fixed;
 }
 
 .about {
@@ -161,4 +154,16 @@ position: fixed;
 
 #submit {
  width:100% ;
+}
+
+.resultsBloc {
+  font-size: 16px;
+}
+
+.glassdoorResults {
+  font-size: 20px;
+}
+
+.entryArea {
+  font-size: 20px;
 }
