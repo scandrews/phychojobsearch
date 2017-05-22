@@ -98,14 +98,13 @@ $(document).ready(function(){
 	$(".assessment").on("click", "button", function(){
 		// get the job that they clicked on
 		jobBackFromClick = $(this).text();
+		// remove spaces for the Glassdoor API
 		queryObject.jobTitle = jobBackFromClick.replace(/\s+/g, '');
 		console.log("chosen career - " + queryObject.jobTitle)
-
 	    $('html, body').animate({
 	        scrollTop: $(".results").offset().top
 	    }, 2000);
 
-// getJobsWithUserDetails(queryObject){
 		// get user input if chose to enter 
 		var inputCity = $(".city").val().trim();
 		var inputState = $(".state").val().trim();
@@ -124,46 +123,55 @@ $(document).ready(function(){
 
 
 
-	// This function displays the listing of job openings
+	// This function tests the results back from the Glassdoor API and displays the appropriate listing of job openings
 	function displayResults (input){
 		if(input.response.employers.length == 0){
+			// We got NO listings back from the glass door API
 			console.log("no jobs!!")
 			$("#jobs").show();
 			$("#radius").show();
 			$(".glassdoorResults").html("Sorry, there are no " + jobBackFromClick + " jobs in your area");
 			// build a button
-			$(".newButtonArea").append("<button class='jobSearchButton btn'>Search Again</button>");
+			$(".newButtonArea").html("<button class='jobSearchButton btn'>Search Again</button>");
 
 			// set a listener on search again
 			$(".newButtonArea").on("click", "button", function(){
-
 				var inputJob = $(".desired-job").val().trim();
 				var inputRadius = $(".search-radius").val().trim();
 				console.log("job and radius - " + inputJob + " - " + inputRadius);
-				// $(".entryArea").clear();
+				// preserve the name without the spaces removed
 				jobBackFromClick = inputJob;
-				queryObject.jobTitle = inputJob;
+				// remove the spaces for the API string
+				queryObject.jobTitle = inputJob.replace(/\s+/g, '');
 				queryObject.searchRadius = inputRadius;
 				getJobsWithUserDetails();
 			});
 		}
 		else{
-
+			// We got a job listing back from GlassDoor API
 			var jobListing = input.response.employers[0].name;
 			console.log("first listed employer - " + jobListing);
-
+			// write the table head
 			$(".glassdoorResults").html("<table><thead>");
 			$(".glassdoorResults").append("<tr><th class='resultsBloc'>Company</th><th class='resultsBloc'>Job Title</th><th class='resultsBloc'>Location</th></tr></thead>");
 			$(".glassdoorResults").append("<tbody>");
-			for (i=0; i < (input.response.employers.length - 1); i++){
-
-				$(".glassdoorResults").append("<tr><td class='resultsBloc'>" + input.response.employers[i].name + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.jobTitle + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.location + "</td></tr>");
-			};
+			if(input.response.employers[0].featuredReview === undefined){
+				// there are job listings but no details (bug that got us in the presentation)
+				for (i=0; i < (input.response.employers.length - 1); i++){
+					$(".glassdoorResults").append("<tr><td class='resultsBloc'>" + input.response.employers[i].name + "</td></tr>");
+				}
+			}else{
+				// the job listings have full detail
+				for (i=0; i < (input.response.employers.length - 1); i++){
+					$(".glassdoorResults").append("<tr><td class='resultsBloc'>" + input.response.employers[i].name + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.jobTitle + "</td><td class='resultsBloc'>" + input.response.employers[i].featuredReview.location + "</td></tr>");
+				};
+			}
 			$(".glassdoorResults").append("</tbody></table>");
 		}
+	// end the test for valid data back from Glass Door API
 	}
 
-	// This function will query the glassdoor API
+	// This function will query the glassdoor API and call the display funtion with the results
 	function getJobsWithUserDetails (queryObj){
 		console.log("Query Obj in getJobsWithUserDetails - ", queryObject);
 
@@ -190,7 +198,7 @@ $(document).ready(function(){
 		// let's see our query string
 		console.log('Query URL: ' + queryURL);
 
-		// call glass door
+		// call the glass door API
 		$.ajax({
 			url: queryURL,
 			method: "GET",
@@ -198,19 +206,14 @@ $(document).ready(function(){
 			dataType: "jsonp"
 		}).done(function(response) {
 			console.log(response);
-			console.log(response.response);
-
 			displayResults(response);
-			// return response;
         })
-			// console.log(tempReturn.response.employers[0].name);
-		// return tempReturn;
-	// console.log("outside ajax - " + tempReturn);
 
 	// close function getJobsWithUserDetails
 	}
 
 // Got this code from http://stackoverflow.com/questions/6478914/reverse-geocoding-code
+// This function will convert the longitude and latitude into a city and state
 function getReverseGeocodingData(lat, lng) {
 	var latlng = new google.maps.LatLng(lat, lng);
 	// This is making the Geocode request
