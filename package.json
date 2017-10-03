@@ -1,0 +1,23 @@
+{
+  "name": "better-job-searching-with-psychometrics",
+  "version": "1.0.0",
+  "description": "psycho job search",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/scandrews/phychojobsearch.git"
+  },
+  "author": "Steven Andrews",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/scandrews/phychojobsearch/issues"
+  },
+  "homepage": "https://github.com/scandrews/phychojobsearch.git",
+  "dependencies": {
+    "express": "^4.16.1"
+  }
+}
